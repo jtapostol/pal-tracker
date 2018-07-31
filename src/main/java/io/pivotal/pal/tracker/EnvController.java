@@ -10,22 +10,32 @@ import java.util.Map;
 @RestController
 public class EnvController {
 
-    private  Map<String, String> envMap = new HashMap<String,String>();
+    private final String port;
+    private final String memoryLimit;
+    private final String cfInstanceIndex;
+    private final String cfInstanceAddress;
 
-    public  EnvController(
-        @Value("${PORT:NOT SET}") String port,
-        @Value("${MEMORY_LIMIT:NOT SET}")String memorylimit,
-        @Value("${CF_INSTANCE_INDEX:NOT SET}")String cfInstanceIndex,
-        @Value("${CF_INSTANCE_ADDR:NOT SET}")String cfInstanceAddress){
-        this.envMap.put("PORT",port);
-        this.envMap.put("MEMORY_LIMIT", memorylimit);
-        this.envMap.put("CF_INSTANCE_INDEX", cfInstanceIndex);
-        this.envMap.put("CF_INSTANCE_ADDR", cfInstanceAddress);
+    public EnvController(
+            @Value("${PORT:NOT SET}") String port,
+            @Value("${MEMORY_LIMIT:NOT SET}") String memoryLimit,
+            @Value("${CF_INSTANCE_INDEX:NOT SET}") String cfInstanceIndex,
+            @Value("${CF_INSTANCE_ADDR:NOT SET}") String cfInstanceAddress
+    ) {
+        this.port = port;
+        this.memoryLimit = memoryLimit;
+        this.cfInstanceIndex = cfInstanceIndex;
+        this.cfInstanceAddress = cfInstanceAddress;
     }
 
     @GetMapping("/env")
-    public Map<String, String> getEnv(){
-        return this.envMap;
-    }
+    public Map<String, String> getEnv() {
+        Map<String, String> env = new HashMap<>();
 
+        env.put("PORT", port);
+        env.put("MEMORY_LIMIT", memoryLimit);
+        env.put("CF_INSTANCE_INDEX", cfInstanceIndex);
+        env.put("CF_INSTANCE_ADDR", cfInstanceAddress);
+
+        return env;
+    }
 }
